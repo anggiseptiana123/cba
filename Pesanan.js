@@ -45,11 +45,15 @@ const Menu = () => {
         });
       }
 
-      async function getDataharga(){
-        API.getHarga().then((res)=>{
-          console.log(res.data);
-          setDataharga(res.data);
-        });
+      async function getDataharga(event){
+        setJumlah(event.target.value)
+        API.getMenu().then((res)=>{
+          setDataharga(res.data.harga);
+          const harga = res.data.harga*jumlah;
+          setTotal(harga)
+          console.log("jumlah" + jumlah)
+          console.log(harga)
+        })
       }
 
       function simpan() {
@@ -157,16 +161,8 @@ async function up(data) {
                                         <input type="number" className="form-control" name="jumlah" placeholder="Input jumlah" required value={jumlah} onChange={(e)=>setJumlah(e.target.value)}></input>
                                     </div> 
                                     <div className="form-group">
-                                        <label htmlFor="menu"></label>
-                                        <select name="menu_id" id="menu" className="form-control" required value={total} onChange={(e)=>setTotal(e.target.value)}>
-                                          <option></option>
-                                          {datamenu.map((item)=>(
-                                            <option key={item.id.toString()} value={item.id}>
-                                            {item.harga*jumlah}
-                                            </option>
-                                            
-                                          ))}
-                                        </select>
+                                        <label htmlFor="total"></label>
+                                        <input type="number" className="form-control" name="total" placeholder="Input total" required value={total} onChange={(e)=>setTotal(e.target.value)}></input>
                                     </div>                 
                                     <div className="card-footer">
                                         <button className="btn btn-primary" type="submit" onClick={simpan}>Simpan</button>
